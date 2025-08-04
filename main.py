@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import time, requests
+import logging
 
 app = Flask(__name__)
 log = logging.getLogger('werkzeug')
