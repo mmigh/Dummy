@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import time, requests
+import os 
 
 app = Flask(__name__)
 status_data = {}
@@ -44,3 +45,7 @@ def webhook():
 @app.route("/")
 def root():
     return "✅ Flask HTTPS API is running."
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
