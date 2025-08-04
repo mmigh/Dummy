@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify
 import time, requests
 
 app = Flask(__name__)
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 status_data = {}           # uid → last ping timestamp
 webhook_url = "https://discord.com/api/webhooks/1396149633155334275/i6ZhDfay0Vt_OsSwyv_uD4K6Uy0QexqljLkJpxj69tMIg2inEZ1D1imcAkfWj0TZYzq0"  # ← Thay webhook thật của bạn
 
