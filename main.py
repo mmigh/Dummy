@@ -3,7 +3,7 @@ import time, requests
 
 app = Flask(__name__)
 status_data = {}
-DISCORD_WEBHOOK = "https://discord.com/api/webhooks/..."  # thay link webhook thật
+DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1396149633155334275/i6ZhDfay0Vt_OsSwyv_uD4K6Uy0QexqljLkJpxj69tMIg2inEZ1D1imcAkfWj0TZYzq0"  # thay link webhook thật
 
 @app.route("/api/ping", methods=["POST"])
 def ping():
