@@ -5,8 +5,12 @@ app = Flask(__name__)
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
-status_data = {}   # uid → last ping timestamp
-webhook_url = "https://discord.com/api/webhooks/1396149633155334275/i6ZhDfay0Vt_OsSwyv_uD4K6Uy0QexqljLkJpxj69tMIg2inEZ1D1imcAkfWj0TZYzq0"  # đổi webhook của bạn
+status_data = {}
+webhook_url = "https://discord.com/api/webhooks/1396149633155334275/i6ZhDfay0Vt_OsSwyv_uD4K6Uy0QexqljLkJpxj69tMIg2inEZ1D1imcAkfWj0TZYzq0"
+
+@app.route("/")
+def home():
+    return jsonify({"status": "ok", "message": "CheckOnl API running"})
 
 @app.route("/ping", methods=["GET"])
 def ping():
@@ -14,7 +18,6 @@ def ping():
     source = request.args.get("source", "")
 
     if source == "uptime":
-        # chỉ để uptime robot ping server, không ảnh hưởng status
         return jsonify({"status":"ok","message":"uptime ping"}), 200
 
     if not uid:
@@ -23,10 +26,9 @@ def ping():
     now = time.time()
     status_data[uid] = now
 
-    # chỉ gửi webhook khi thực sự từ executor
     if source == "executor":
         key = f"_last_webhook_{uid}"
-        if now - status_data.get(key, 0) > 60:  # mỗi uid báo 1 lần / phút
+        if now - status_data.get(key, 0) > 60:
             try:
                 requests.post(webhook_url, json={
                     "content": f"✅ Executor UID `{uid}` vừa online"
@@ -42,7 +44,7 @@ def status(uid):
     now  = time.time()
     last = status_data.get(uid, 0)
 
-    if last and now - last < 60:  # ping < 60s coi như online
+    if last and now - last < 60:
         return jsonify({"uid":uid,"status":"online"})
     else:
         return jsonify({"uid":uid,"status":"offline"})
